@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <% include ../partials/menu %>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                                <i class="fa fa-bars"></i>
+                            </a>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <a href="login?signout">
+                                    <i class="fa fa-sign-out"></i> Log out
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="wrapper wrapper-content">
+                    <div class="row">
+                        <div class="ibox-content">
+                            <div class="form-horizontal">
+                                <h2>Add Sticky Post</h2>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Post Content</label>
+                                    <div class="col-sm-6">
+                                        <input id="content" type="text" name="" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <input class="btn btn-primary" value="Save Changes" onclick="save()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Sticky Posts</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 table-responsive">
+                                            <table class="table table-hover no-margins users-table" data-page-length='13'>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Post Content</th>
+                                                        <th>Post Creation Date</th>
+                                                        <th>Delete Sticky Post</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% for (var i = 0; i < stickyPost.length; i++) {%>
+                                                        <tr>
+                                                            <td> <%= stickyPost[i].content %> </td>
+                                                            <td> <%= stickyPost[i].createdAt %> </td>
+                                                            <td>
+                                                                <a onclick='removeItem("<%=stickyPost[i]._id %>")'>
+                                                                    <i class="fa fa-times"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="pull-right">
+                        <a href="http://moveosoftware.com">moveosoftware.com</a>
+                    </div>
+                    <div>
+                        <strong>Powered by</strong> Moveo Group
+                    </div>
+                </div>
+                <script>
+                    // var row = <%-JSON.stringify(stickyPost)%>
+                    // console.log(row);
+
+                    function removeItem(idToRemove) {
+                        swal({
+                            title: "Are you sure?",
+                            text: "You will not be able to recover this!",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Yes, delete it!",
+                            closeOnConfirm: false
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                $.ajax({
+                                    url: 'manageStickyPost?stickyId=' + idToRemove,
+                                    type: 'DELETE',
+                                    success: function (response) {
+                                        if (response.success)
+                                            window.location.href = '/admin/forun';
+                                        swal.close();
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    function save() {
+                        var isValidated = validateData();
+                        console.log(isValidated);
+                        if (isValidated[0]) {
+                            var objToSave = isValidated[1];
+                            var model = {
+                                model: objToSave
+                            };
+                            $.ajax({
+                                url: 'manageStickyPost',
+                                type: 'post',
+                                data: model,
+                                success: function (response) {
+                                    if (response.success) {
+                                        window.location.href = '/admin/forum';
+                                    }
+                                }
+                            });
+                        } else {
+                            var model = {
+                                model: objToSave
+                            };
+                            $.post('manageStickyPost', model, function (response) {
+                                if (response.success) {
+                                    window.location.href = '/admin/forum';
+                                }
+                            });
+                        }
+                    };
+
+
+
+                    function validateData() {
+                        var content = $("#content").val();
+                        if (content == '') {
+                            showSwal('warning', 'Fill All Fields');
+                            return [false];
+                        };
+                        var model = {
+                            content: content,
+                            status: 'sticky'
+                        };
+                        return [true, model];
+                    }
+
+                    //Initialization Section
+                    $('.users-table').DataTable({
+                        dom: '<"html5buttons"B>lTfgitp',
+                        buttons: [],
+                        deferRender: true,
+                        bLengthChange: false,
+                        aoColumnDefs: [{
+                            'bSortable': false,
+                            'aTargets': [0, 'action']
+                        }]
+                    });
+                </script>
+</body>
+
+</html>

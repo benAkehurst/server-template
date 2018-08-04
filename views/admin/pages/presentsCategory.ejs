@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <% include ../partials/menu %>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                                <i class="fa fa-bars"></i>
+                            </a>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <a href="login?signout">
+                                    <i class="fa fa-sign-out"></i> Log out
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="wrapper wrapper-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Presents Category</h5>
+                                </div>
+                                <div class="ibox-content">
+
+                                    <div class="row">
+                                        <div class="form-horizontal">
+
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Category Title</label>
+                                                <div class="col-sm-6">
+                                                    <input id="title" type="text" name="" class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group ">
+                                                <label class="col-sm-2 control-label">Category Image</label>
+                                                <div class="col-sm-2 ">
+                                                    <input id="img" type="file" accept="image/gif, image/jpeg, image/png" class="form-control">
+                                                </div>
+
+                                                <div class="images-area"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Category Type</label>
+                                                <div class="col-sm-2 ">
+                                                    <select id="type">
+                                                        <option value="general">General</option>
+                                                        <option value="holiday">Holidays</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <div class="col-sm-4 col-sm-offset-2">
+                                                    <a class="btn btn-white" href="events">Back</a>
+                                                    <input class="btn btn-primary" value="Save Changes" onclick="save()">
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="footer">
+                    <div class="pull-right">
+                        <a href="http://moveosoftware.com">moveosoftware.com</a>
+                    </div>
+                    <div>
+                        <strong>Powered by</strong> Moveo Group
+                    </div>
+                </div>
+                <script>
+
+
+
+                    //Initialization Section
+                    $('.users-table').DataTable({
+                        dom: '<"html5buttons"B>lTfgitp',
+                        buttons: [],
+                        deferRender: true,
+                        bLengthChange: false,
+                        aoColumnDefs: [{
+                            'bSortable': false,
+                            'aTargets': [0, 'action']
+                        }]
+                    });
+
+
+
+
+
+        var region = "eu-west-1";
+        var id = "7eab6e63-7f95-4b67-9546-f0e39c6931af";
+        var version = '2006-03-01';
+        var bucketName = "weshare-dev-images";
+        var img = "";
+
+
+
+
+        var S3Rapper = function (region, IdentityID, BucketName, apiVersion = '2006-03-01') {
+
+            var _S3SdkWrapper = {};
+
+            AWS.config.region = region;
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: region + ':' + IdentityID,
+            });
+            var s3 = new AWS.S3({
+                apiVersion: apiVersion,
+                params: { Bucket: BucketName }
+            });
+
+            //Method regions
+
+            /*
+            Params - img file , message for Info,Success,Error toast, and call back method
+            Return -  Promise -object{
+              success - type bool
+              url - type string - if success then set the url
+              error - type string - if not success then set the error
+            }
+            */
+            _S3SdkWrapper.UploadImageAsync = function (file, cb) {
+
+                var fileName = file.name;
+                var fileType = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length)
+                fileName = fileName.replace(fileType, '');
+                var photoKey = fileName + Date.now() + '.' + fileType;
+                s3.upload({
+                    Key: photoKey,
+                    Body: file,
+                    ACL: 'public-read',
+                    'Accept-Encoding': 'gzip',
+                },
+                    function (err, data) {
+                        var resp;
+                        if (err) {
+                            resp = { success: false, error: err };
+
+                        } else {
+                            resp = { success: true, url: data.Location };
+                        }
+                        cb(resp);
+                    }
+                );
+            }
+
+
+
+            return _S3SdkWrapper;
+        }
+
+
+        $('#img').change(function (event) {
+            $('.images-area').html('');
+            s3Wrapp.UploadImageAsync(event.target.files[0], function (response) {
+                if (response.success === true) {
+                    img = response.url;
+                    addImage(img)
+                } else {
+                    console.log(response);
+                }
+            }
+            );
+        });
+
+
+
+        var s3Wrapp = S3Rapper(region, id, bucketName, version);
+
+
+
+
+
+
+
+
+
+
+        function removeImage() {
+            $('.images-area').html('');
+            img = '';
+        }
+
+        function addImage(imgUrl) {
+            $('.images-area').append("<div class=\" align-items-in-row \">\
+                                <img style=\"width: 150px;\" src=\""+ imgUrl + " \" />\
+                                <div class=\" separate-obj-in-row\">\
+                                        <i  class=\"fa fa-minus removeImage \" aria-hidden=\"true\"></i>\
+                                </div>\
+                            </div>")
+            $('.removeImage').click(removeImage);
+        }
+
+                    function save() {
+
+                        var title = $("#title").val();
+                        var url = img;
+                        var type = $("#type").val();
+
+                        debugger;
+
+                    var data = {
+                        title: title,
+                        img: url,
+                        type: type
+                    };
+                    $.post('addPresentsCategory', data, function (response) {
+                        if (response.success) {
+                            window.location.href = '/admin/presents';
+                        }
+                    });
+                    }
+
+
+                </script>
+</body>
+
+</html>

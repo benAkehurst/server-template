@@ -1,0 +1,171 @@
+
+[tooltip]:before {            
+    position : absolute;
+     content : attr(tooltip);
+     opacity : 0;
+}
+
+[tooltip]:hover:before {        
+    opacity : 1;
+    margin-top: -82px;
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    overflow: visible;
+    z-index: 9;
+    position: absolute;  
+    width: 300px;
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+    pointer-events: none;
+}
+
+.loginscreen img.logo {
+  max-width:100%; 
+  max-height: 100%; 
+}
+
+.profile-element .img-circle {
+      width: 50%;
+      border-radius: 0px;
+}
+
+.small-icon {
+  width: 30px;
+  height: 30px;
+}
+
+#page-wrapper {
+}
+
+.col-lg-9 {
+}
+
+th {
+}
+
+.ibox {
+      margin-bottom: 35px;
+      padding: 15px 20px 55px 20px;
+      margin-top: 18px;
+      
+}
+
+
+.btn {
+  float: right;
+  margin-left: 15px;
+}
+
+.ibox-title {
+    border-style: none;
+}
+
+.form-horizontal .control-label, .search-choice, .chosen-container-multi .chosen-choices li, div.tagsinput span.tag, div.tagsinput div {
+}
+
+div.tagsinput input {
+    width: 90px !important;
+}
+
+div.tagsinput {
+    min-height: 42px !important;
+    height: initial !important;
+    width: initial !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+      margin-right: 0.5em;
+}
+
+.ibox-title h5 {
+  font-size: 18px;
+}
+
+#dZUpload, #dZUpload-video {
+    height: 100px;
+    min-height: 250px;
+    width: 250px;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+    color: white;
+    background: rgba(128, 128, 128, 0.57);
+    margin-top: 5px;
+}
+
+.dz-message {
+  background-image: none !important;
+    width: 240px !important;
+    font-size: 25px;
+    text-align: center;
+    margin-left: -120px !important;
+    margin-top: -25px !important;
+}
+
+.legendColorBox>div {
+  border: none !important;
+}
+
+.label-warning {
+      float: left !important;
+}
+
+
+.g-signin2 div {
+  margin: 0 auto;
+}
+
+
+.swal-form input.nice-input {
+    margin-top: 10px !important;
+    width: 100% !important;
+}
+
+.float-e-margins .btn {
+  margin-right: 15px;
+}
+
+.label-success {
+    margin-right: 15px;
+}
+
+.ibox-content .answers-content {
+    direction: rtl;
+    text-align: center;
+}
+
+.upper-table-form {
+    height: 170px;
+}
+
+.btn-fromleft {
+    float: left;
+}
+
+.form-horizontal .form-group-custom {
+    margin-left: 0;
+    height: 35px;
+}
+
+.achievement-image {
+    height: 150px;
+}
+
+.rtl {
+    direction: rtl;
+}
+
+
+.align-items-in-row{
+    display: flex;
+    align-items: center;
+}
+
+.separate-obj-in-row{
+    margin-left: 50px;
+}

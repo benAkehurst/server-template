@@ -1,0 +1,29 @@
+{
+  "MongoDB": {
+    "Configurations": {
+      "host": "localhost",
+      "user": "",
+      "password": "",
+      "port": "27017",
+      "database": "test-db"
+    },
+    "currentVersion": 1
+  },
+
+  "Security": {
+    "Request": {
+      "Header": {
+        "key": "Chatlist-App-Auth",
+        "value": "HoJEhbK2g$vj5WOmJZ4hEy6kOrFCzg51"
+      }
+    },
+    "ForgotPassword": {
+      "hoursExpiry": 24
+    }
+  },
+
+  "Mailgun": {
+    "apiKey": "key-4e94ad3d1e692bd3c0aae5184fe8d77a",
+    "domain": "we-share.co.il"
+  }
+}

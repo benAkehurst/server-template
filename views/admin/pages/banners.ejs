@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div id="wrapper">
+            <% include ../partials/menu %>
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a href="login?signout">
+                                <i class="fa fa-sign-out"></i> Log out
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Banners List</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div>
+                                    <a href="banner" class="pull-left btn label-success">Add A New Banner</a>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 table-responsive">
+                                        <table class="table table-hover no-margins users-table" data-page-length='13'>
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Link</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% for(var i=0; i < banners.length; i++) {%>
+                                                    <tr>
+                                                        <td>
+                                                            <%= banners[i].name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= banners[i].link %>
+                                                        </td>
+                                                        <td>
+                                                            <a href="banner?bannerId=<%=banners[i]._id %>">
+                                                                <i class="fa fa-info"></i>
+                                                            </a>
+                                                            &nbsp
+                                                            <a onclick='removeItem("<%=banners[i]._id %>")'>
+                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="pull-right">
+                    <a href="http://moveosoftware.com">moveosoftware.com</a>
+                </div>
+                <div>
+                    <strong>Powered by</strong> Moveo Group
+                </div>
+            </div>
+            <script>
+
+                function removeItem(idToRemove) {
+                    swal({
+                        title: "Are you sure?",
+                        text: "You will not be able to recover this!",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        closeOnConfirm: false
+                    }, function (isConfirm) {
+                        if (isConfirm) {
+                            $.ajax({
+                                url: 'banner?removeId=' + idToRemove,
+                                type: 'DELETE',
+                                success: function (response) {
+                                    if (response.success)
+                                        window.location.href = '/admin/banners';
+                                    swal.close();
+                                }
+                            });
+                        }
+                    });
+                }
+
+                //Initialization Section
+                $('.users-table').DataTable({
+                    dom: '<"html5buttons"B>lTfgitp',
+                    buttons: [],
+                    deferRender: true,
+                    bLengthChange: false,
+                    aoColumnDefs: [{
+                        'bSortable': false,
+                        'aTargets': [0, 'action']
+                    }]
+                });
+
+
+            </script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div id="wrapper">
+            <% include ../partials/menu %>
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a href="login?signout">
+                                <i class="fa fa-sign-out"></i> Log out
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                
+                                    <h5>Active Users</h5>
+                               
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">
+                                    <%= activeUsers %>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                               
+                                    <h5>Pending Users</h5>
+                                
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">
+                                    <%= pendingUsers %>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                <a href="http://moveosoftware.com">moveosoftware.com</a>
+            </div>
+            <div>
+                <strong>Powered by</strong> Moveo Group
+            </div>
+        </div>
+</body>
+
+</html>

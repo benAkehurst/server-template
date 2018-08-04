@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <% include ../partials/menu %>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                                <i class="fa fa-bars"></i>
+                            </a>
+
+                        </div>
+                    </nav>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="ibox-title-text-box">
+                                    <h5>Present</h5>
+                                    <% if(edit){ %>
+                                        <a href="presentsParticipants?presentId=<%= present._id %>" class="pull-right btn label-success">Manage Participants</a>
+                                        <% } %>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Title</label>
+                                        <div class="col-sm-6">
+                                            <input id="title" type="text" name="" class="form-control" value="<%= edit ? present.title : '' %>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Description</label>
+                                        <div class="col-sm-6">
+                                            <div class="summernote" id="description"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Present Image</label>
+                                        <div class="col-sm-2 ">
+                                            <input id="img" type="file" accept="image/gif, image/jpeg, image/png" class="form-control">
+                                        </div>
+                                        <div class="col-sm-4 images-area">
+                                            <% if(edit && present.eventImage != ''){ %>
+                                                <div class=" align-items-in-row ">
+                                                    <img style="width: 150px;" src="<%= present.presentImage %>" />
+                                                    <div class=" separate-obj-in-row">
+                                                        <i class="fa fa-minus removeImage " aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Price Low</label>
+                                        <div class="col-sm-2">
+                                            <input id="priceLow" type="text" class="form-control" value="<%= edit ? present.priceLow : '' %>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Price Medium</label>
+                                        <div class="col-sm-2">
+                                            <input id="priceMed" type="text" class="form-control" value="<%= edit ? present.priceMed : '' %>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Price High</label>
+                                        <div class="col-sm-2">
+                                            <input id="priceHigh" type="text" class="form-control" value="<%= edit ? present.priceHigh : '' %>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Event Category</label>
+                                        <div class="col-sm-2">
+
+                                            <br/>
+
+                                            <% for(var i=0; i < categories.length; i++) {%>
+                                                <div class="form-group">
+
+                                                    <input class="checkbox" type="checkbox" value="<%=categories[i]._id%>" <%=contain(present,categories[i]._id)? "checked":""%> />
+                                                    <span>
+                                                        <%=categories[i].title%>
+                                                    </span>
+                                                </div>
+
+
+
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <% if(edit) { %>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Amount Sold</label>
+                                            <div class="col-sm-2">
+                                                <input id="ticket" type="number" min="0" class="form-control" value="<%= edit ? present.amountSold : '' %>">
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Last Date To Buy</label>
+                                                <div class="col-sm-2">
+                                                    <input id="RegisterUntil" type="date" class="form-control" value="<%= edit ? present.timeEnd : '' %>">
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <div class="col-sm-4 col-sm-offset-2">
+                                                    <a class="btn btn-white" href="events">Back</a>
+                                                    <input class="btn btn-primary" value="Save Changes" onclick="save()">
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="pull-right">
+                    <a href="http://moveosoftware.com">moveosoftware.com</a>
+                </div>
+                <div>
+                    <strong>Powered by</strong> Moveo Group
+                </div>
+            </div>
+    </div>
+
+    <script>
+        var edit = <%=edit%>;
+        var presentModel = <%= edit ?JSON.stringify(present) : false %>;
+        debugger;
+        var img = "<%= edit? present.presentImage: '' %>"
+        var today = new Date().toISOString().split("T")[0];
+        // debugger;
+        $("#RegisterUntil").attr('min', today);
+        $("#date").attr('min', today);
+
+        $("#minPar").change(function () {
+            // debugger;
+            let val = $("#minPar").val();
+            $("#maxPar").attr('min', val);
+            $("#maxPar").attr('value', Number(val));
+        });
+
+
+
+
+        function save() {
+            var isValidated = validateData();
+            if (isValidated[0]) {
+                var objToSave = isValidated[1];
+
+                var types = new Array();
+                $('.checkbox').each(function () {
+                    if (this.checked) {
+                        types.push($(this).val());
+                    }
+
+                });
+
+                objToSave['categories'] = types;
+                debugger;
+
+
+
+
+                if (edit) {
+                    objToSave['_id'] = presentModel._id
+                    var model = {
+                        model: objToSave
+                    };
+                    $.ajax({
+                        url: 'presents',
+                        type: 'put',
+                        data: model,
+                        success: function (response) {
+                            if (response.success) {
+                                window.location.href = '/admin/presents';
+                            }
+                        }
+                    });
+                } else {
+                    var model = {
+                        model: objToSave
+                    };
+                    $.post('presents', model, function (response) {
+                        if (response.success) {
+                            window.location.href = '/admin/presents';
+                        }
+                    });
+                }
+            }
+        };
+
+        function validateData() {
+            var title = $("#title").val()
+            var description = $("#description").code()
+            // Image
+            var priceLow = $("#priceLow").val()
+            var priceMed = $("#priceMed").val()
+            var priceHigh = $("#priceHigh").val()
+            var RegisterUntil = $("#RegisterUntil").val()
+            var ticket = $("#ticket").val();
+            var checkbox = [];
+            if ($("#checkbox1").is(":checked")) {
+                checkbox.push('פסח');
+            } else if ($("#checkbox2").is(":checked")) {
+                checkbox.push('שבועות');
+            } else if ($("#checkbox3").is(":checked")) {
+                checkbox.push('סוכות');
+            } else if ($("#checkbox4").is(":checked")) {
+                checkbox.push('פורים');
+            } else if ($("#checkbox5").is(":checked")) {
+                checkbox.push('ראש השנה');
+            }
+
+            var correct = true;
+
+            var model = {
+                title: title,
+                description: description,
+                presentImage: img,
+                priceLow: priceLow,
+                priceMed: priceMed,
+                priceHigh: priceHigh,
+                timeEnd: RegisterUntil,
+                categories: checkbox,
+
+            }
+            if (edit) {
+                model['amountSold'] = ticket
+            }
+
+            return [true, model]
+        }
+
+
+        //
+        // ─── IMAGE SECTION ──────────────────────────────────────────────────────────────
+        //  
+
+        //('us-east-2', '3e65bb99-ddd7-4212-adb6-9c837a99c846', 'we-share-prod');
+
+        var region = "eu-west-1";
+        var id = "7eab6e63-7f95-4b67-9546-f0e39c6931af";
+        var version = '2006-03-01';
+        var bucketName = "weshare-dev-images";
+        var img = "<%= edit ? present.presentImage : '' %>";
+
+
+
+        var S3Rapper = function (region, IdentityID, BucketName, apiVersion = '2006-03-01') {
+
+            var _S3SdkWrapper = {};
+
+            AWS.config.region = region;
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: region + ':' + IdentityID,
+            });
+            var s3 = new AWS.S3({
+                apiVersion: apiVersion,
+                params: {
+                    Bucket: BucketName
+                }
+            });
+
+            //Method regions
+
+            /*
+            Params - img file , message for Info,Success,Error toast, and call back method
+            Return -  Promise -object{
+              success - type bool
+              url - type string - if success then set the url
+              error - type string - if not success then set the error
+            }
+            */
+            _S3SdkWrapper.UploadImageAsync = function (file, cb) {
+
+                var fileName = file.name;
+                var fileType = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length)
+                fileName = fileName.replace(fileType, '');
+                var photoKey = fileName + Date.now() + '.' + fileType;
+                s3.upload({
+                    Key: photoKey,
+                    Body: file,
+                    ACL: 'public-read',
+                    'Accept-Encoding': 'gzip',
+                },
+                    function (err, data) {
+                        var resp;
+                        if (err) {
+                            resp = {
+                                success: false,
+                                error: err
+                            };
+
+                        } else {
+                            resp = {
+                                success: true,
+                                url: data.Location
+                            };
+                        }
+                        cb(resp);
+                    }
+                );
+            }
+
+
+
+            return _S3SdkWrapper;
+        }
+
+
+        $('#img').change(function (event) {
+            $('.images-area').html('');
+            s3Wrapp.UploadImageAsync(event.target.files[0], function (response) {
+                if (response.success === true) {
+                    img = response.url;
+                    addImage(img)
+                } else {
+                    console.log(response);
+                }
+            });
+        });
+
+        var s3Wrapp = S3Rapper(region, id, bucketName, version);
+
+        function removeImage() {
+            $('.images-area').html('');
+            img = '';
+        }
+
+        function addImage(imgUrl) {
+            $('.images-area').append(
+                "<div class=\" align-items-in-row \">\
+                                <img style=\"width: 150px;\" src=\"" +
+                imgUrl +
+                " \" />\
+                                <div class=\" separate-obj-in-row\">\
+                                        <i  class=\"fa fa-minus removeImage \" aria-hidden=\"true\"></i>\
+                                </div>\
+                            </div>"
+            )
+            $('.removeImage').click(removeImage);
+        }
+
+        function fillExistingData() {
+            if (edit && presentModel.description)
+                $('.summernote').code(presentModel.description);
+        }
+
+        $(document).ready(function () {
+            $('.summernote').summernote();
+            fillExistingData();
+        });
+    </script>
+</body>
+
+</html>

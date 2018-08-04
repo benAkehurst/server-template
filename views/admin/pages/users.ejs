@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div id="wrapper">
+            <% include ../partials/menu %>
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-left">
+                        <li>
+                            <a href="login?signout">
+                                התנתק
+                                <i class="fa fa-sign-out"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="ibox-title-text-box">
+                                    <h5>Active Users</h5>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">
+                                    <%= activeUsers.length %>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="ibox-title-text-box">
+                                    <h5>PendingUsers</h5>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">
+                                    <%= pendingUsers.length %>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="ibox-title-text-box">
+                                    <a class="pull-left collapse-link ui-sortable">
+                                        &nbsp;
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <h5>Pending Users</h5>
+                                </div>
+                            </div>
+                            <div class="ibox-content collapse">
+                                <div class="row">
+                                    <div class="col-lg-12 table-responsive">
+                                        <table class="table table-hover no-margins users-pending-table" data-order='[[ 0, "desc" ]]' data-page-length='13'>
+                                            <thead>
+                                                <tr>
+                                                    <th>Registered</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Telephone</th>
+                                                    <th>Business Name</th>
+                                                    <th>Business Field</th>
+                                                    <th>Role</th>
+                                                    <th>Business Address</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% for(var i=0; i < pendingUsers.length; i++) {%>
+                                                    <tr>
+                                                        <td>
+                                                            <%= new Date(pendingUsers[i].createdAt).toDateString() %>
+                                                        </td>
+                                                        <td>
+                                                            <%= pendingUsers[i].name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= pendingUsers[i].email %>
+                                                        </td>
+                                                        <td>
+                                                            <%= pendingUsers[i].telephoneNumber %>
+                                                        </td>
+                                                        <td>
+                                                            <%= pendingUsers[i].businessName %>
+                                                        </td>
+                                                        <td>
+                                                            <%= pendingUsers[i].businessField %>
+                                                        </td>
+                                                        <td>
+                                                            <%= pendingUsers[i].businessRole %>
+                                                        </td>
+                                                        <td>
+                                                            <%= pendingUsers[i].businessAddress %>
+                                                        </td>
+                                                        <td>
+                                                            <a onclick='acceptUser("<%=pendingUsers[i]._id %>", "<%=pendingUsers[i].email %>")'>
+                                                                <i class="fa fa-info"></i>
+                                                            </a>
+                                                            &nbsp
+                                                            <a onclick='UnacceptUser("<%=pendingUsers[i]._id %>")'>
+                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <div class="ibox-title-text-box">
+                                    <a class="pull-left collapse-link ui-sortable">
+                                        &nbsp;
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <h5>Active Users</h5>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-12 table-responsive">
+                                        <table class="table table-hover no-margins users-active-table" data-page-length='13'>
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Telephone</th>
+                                                    <th>Business Name</th>
+                                                    <th>Business Field</th>
+                                                    <th>Role</th>
+                                                    <th>Business Address</th>
+                                                    <th>Business Size</th>
+                                                    <th>Action</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% for(var i=0; i < activeUsers.length; i++) {%>
+                                                    <tr>
+                                                        <td>
+                                                            <%= activeUsers[i].name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= activeUsers[i].email %>
+                                                        </td>
+                                                        <td>
+                                                            <%= activeUsers[i].telephoneNumber %>
+                                                        </td>
+                                                        <td>
+                                                            <%= activeUsers[i].businessName %>
+                                                        </td>
+                                                        <td>
+                                                            <%= activeUsers[i].businessField %>
+                                                        </td>
+                                                        <td>
+                                                            <%= activeUsers[i].businessRole %>
+                                                        </td>
+                                                        <td>
+                                                            <%= activeUsers[i].businessAddress %>
+                                                        </td>
+                                                        <td>
+                                                            <%= activeUsers[i].businessEmployees %>
+                                                        </td>
+                                                        <td>
+                                                            <a href="userProfile?userId=<%=activeUsers[i]._id %>">
+                                                                <i class="fa fa-info"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                <a href="http://moveosoftware.com">moveosoftware.com</a>
+            </div>
+            <div>
+                <strong>Powered by</strong> Moveo Group
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function acceptUser(pendinUserId, pendingUserEmail) {
+        swal({
+            title: "Are you sure you want to Accept the User?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes!",
+            closeOnConfirm: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                var data = {email: pendingUserEmail};
+                $.ajax({
+                    url: 'pendingUser?userId=' + pendinUserId,
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        if (response.success)
+                            window.location.href = '/admin/users';
+                        swal.close();
+                    }
+                });
+            }
+        });
+    }
+
+    function UnacceptUser(pendinUserId) {
+        swal({
+            title: "Are you sure you want to NOT ACCEPT  the User?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes!, Delete the User",
+            closeOnConfirm: false
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: 'pendingUser?userId=' + pendinUserId,
+                    type: 'DELETE',
+                    success: function (response) {
+                        if (response.success)
+                            window.location.href = '/admin/users';
+                        swal.close();
+                    }
+                });
+            }
+        });
+    }
+
+
+
+    $('.users-active-table').DataTable({
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: [
+        ],
+        deferRender: true,
+        bLengthChange: false,
+        aoColumnDefs: [
+            { 'bSortable': false, 'aTargets': [0, 'action'] }
+        ],
+
+    });
+
+
+
+
+
+
+    $('.users-pending-table').DataTable({
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: [{
+            extend: 'excel',
+            title: 'Businesses'
+        },
+        {
+            extend: 'pdf',
+            title: 'Businesses'
+        },
+        ],
+        deferRender: true,
+        bLengthChange: false,
+        aoColumnDefs: [{
+            'bSortable': false,
+            'aTargets': [0, 'action']
+        }]
+    });
+
+</script>
+
+</html>

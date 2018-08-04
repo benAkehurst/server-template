@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <% include ../partials/menu %>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                                <i class="fa fa-bars"></i>
+                            </a>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <a href="login?signout">
+                                    <i class="fa fa-sign-out"></i> Log out
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="wrapper wrapper-content">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <div class="ibox-title-text-box">
+                                        <h5>Active Inspiration Events</h5>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <h1 class="no-margins">
+                                        <%= activeEvents.length %>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <div class="ibox-title-text-box">
+                                        <h5>Pending Inspiration Events</h5>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <h1 class="no-margins">
+                                        <%= pendingEvents.length %>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Pending Inspiration Events List</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <div class="col-lg-12 table-responsive">
+                                            <table class="table table-hover no-margins users-table" data-page-length='13'>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Description</th>
+                                                        <th>Date</th>
+                                                        <th>Location</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% for (var i = 0; i < pendingEvents.length; i++) { %>
+                                                        <tr>
+                                                            <td>
+                                                                <%= pendingEvents[i].title %>
+                                                            </td>
+                                                            <td>
+                                                                <%= pendingEvents[i].eventDescription %>
+                                                            </td>
+                                                            <td>
+                                                                <%= pendingEvents[i].eventDate %>
+                                                            </td>
+                                                            <td>
+                                                                <%= pendingEvents[i].eventLocation %>
+                                                            </td>
+                                                            <td>
+                                                                <a onclick='acceptEvent("<%=pendingEvents[i]._id %>")'>
+                                                                    <i class="fa fa-info"></i>
+                                                                </a>
+                                                                &nbsp
+                                                                <a onclick='UnacceptEvent("<%=pendingEvents[i]._id %>")'>
+                                                                    <i class="fa fa-times"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Approved Inspiration Events List</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <div class="col-lg-12 table-responsive">
+                                            <table class="table table-hover no-margins users-table" data-page-length='13'>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Description</th>
+                                                        <th>Date</th>
+                                                        <th>Location</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% for (var i = 0; i < activeEvents.length; i++) { %>
+                                                        <tr>
+                                                            <td>
+                                                                <%= activeEvents[i].title %>
+                                                            </td>
+                                                            <td>
+                                                                <%= activeEvents[i].eventDescription %>
+                                                            </td>
+                                                            <td>
+                                                                <%= activeEvents[i].eventDate %>
+                                                            </td>
+                                                            <td>
+                                                                <%= activeEvents[i].eventLocation %>
+                                                            </td>
+                                                            <td>
+                                                                <a onclick='removeItem("<%=activeEvents[i]._id %>")'>
+                                                                    <i class="fa fa-times"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="pull-right">
+                        <a href="http://moveosoftware.com">moveosoftware.com</a>
+                    </div>
+                    <div>
+                        <strong>Powered by</strong> Moveo Group
+                    </div>
+                </div>
+                <script>
+                    var row = <%-JSON.stringify(pendingEvents)%>
+                    console.log(row);
+
+                    function acceptEvent(pendinEventId) {
+                        swal({
+                            title: "Are you sure you want to Accept the Event?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Yes!",
+                            closeOnConfirm: false
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                $.ajax({
+                                    url: 'editInspiration?eventId=' + pendinEventId,
+                                    type: 'POST',
+                                    success: function (response) {
+                                        if (response.success)
+                                            window.location.href = '/admin/inspiration';
+                                        swal.close();
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    function UnacceptEvent(pendinEventId) {
+                        swal({
+                            title: "Are you sure you want to NOT ACCEPT  the User?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Yes!, Delete the User",
+                            closeOnConfirm: false
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                $.ajax({
+                                    url: 'editInspiration?eventId=' + pendinEventId,
+                                    type: 'DELETE',
+                                    success: function (response) {
+                                        if (response.success)
+                                            window.location.href = '/admin/inspiration';
+                                        swal.close();
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    function removeItem(idToRemove) {
+                        swal({
+                            title: "Are you sure?",
+                            text: "You will not be able to recover this!",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Yes, delete it!",
+                            closeOnConfirm: false
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                $.ajax({
+                                    url: 'editInspiration?eventId=' + idToRemove,
+                                    type: 'DELETE',
+                                    success: function (response) {
+                                        if (response.success)
+                                            window.location.href = '/admin/inspiration';
+                                        swal.close();
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    //Initialization Section
+                    $('.users-table').DataTable({
+                        dom: '<"html5buttons"B>lTfgitp',
+                        buttons: [],
+                        deferRender: true,
+                        bLengthChange: false,
+                        aoColumnDefs: [{
+                            'bSortable': false,
+                            'aTargets': [0, 'action']
+                        }]
+                    });
+                </script>
+</body>
+
+</html>

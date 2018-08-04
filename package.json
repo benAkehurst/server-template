@@ -1,0 +1,52 @@
+{
+  "name": "chatlist-server",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MoveoTech/ChatList-Server.git"
+  },
+  "dependencies": {
+    "@pusher/chatkit-server": "^0.12.1",
+    "apn": "^2.1.5",
+    "async": "^2.6.1",
+    "axios": "^0.18.0",
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "config": "^1.26.1",
+    "cors": "^2.8.4",
+    "debug": "^2.6.8",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.7",
+    "express": "^4.15.3",
+    "express-validator": "^3.2.0",
+    "firebase-admin": "^5.1.0",
+    "generate-password": "^1.4.0",
+    "mailcomposer": "^4.0.2",
+    "mailgun-js": "^0.12.1",
+    "moment": "^2.18.1",
+    "mongoose": "^4.10.6",
+    "mongoose-deep-populate": "^3.0.0",
+    "mongoose-type-url": "^1.0.2",
+    "mongoose-unique-validator": "^2.0.0",
+    "morgan": "^1.8.2",
+    "process-env": "^1.1.0",
+    "randomstring": "^1.1.5",
+    "socketio": "^1.0.0",
+    "websocket": "^1.0.26"
+  },
+  "apidoc": {
+    "name": "ChatList API Docs",
+    "version": "0.3.2",
+    "description": "API for the Android/iOS mobile app",
+    "title": "ChatList API",
+    "url": "http://chatlist_dev.moveodevelop.com/api/",
+    "template": {
+      "withCompare": true,
+      "withGenerator": true
+    }
+  }
+}

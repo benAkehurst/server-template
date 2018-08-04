@@ -1,0 +1,9 @@
+{
+    "Notifications" :
+    {
+        "IOS" :
+        {
+            "production": true
+        }
+    }
+}
